@@ -30,3 +30,9 @@ class SavingsAccount(Account):
 class ChequingAccount(Account):
     def __init__(self):
         pass
+    def withdraw(self, value):
+        if self.Current_Balance == -5000.0:
+            return "Cannot go below -$5000.0"
+        else:
+            self.Current_Balance -= value
+            return "Curremt Balance: " + self.Current_Balance
