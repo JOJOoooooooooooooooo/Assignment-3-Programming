@@ -1,19 +1,26 @@
 from tkinter import *
 import Bank
-import Account
+from AccountModule import Account
 import os
+
+
+a1= Account
 
 def savings():
     win7 = Toplevel(win)
-    win7.title(username1 + "'s Savings Account")
+    win3.destroy()
+    win7.title(a1.Account_Holder_Name + "'s Savings Account")
     win7.geometry("350x300")
-    username_savings = Label(win7, text= username1 + "'s Savings Account", font= ("Calibri, 13"))
+    username_savings = Label(win7, text= a1.Account_Holder_Name + "'s Savings Account", font= ("Calibri, 13"))
     username_savings.pack()
+    Button(win7, text= "Back", command= login_session).pack()
+    
 def chequing():
     win6 = Toplevel(win)
-    win6.title(username1 + "'s Chequing Account")
+    win3.destroy()
+    win6.title(a1.Account_Holder_Name + "'s Chequing Account")
     win6.geometry("350x300")
-    username_chequing = Label(win6, text= username1 + "'s Chequing Account", font= ("Calibri, 13"))
+    username_chequing = Label(win6, text= a1.Account_Holder_Name + "'s Chequing Account", font= ("Calibri, 13"))
     username_chequing.pack()
 def login_session():
     global win3
@@ -30,6 +37,7 @@ def login_session():
 
 def login_success():
     login_session()
+
 def password_incorrect():
     global win4
     win4 = Toplevel(win)
@@ -82,7 +90,8 @@ def login_verify():
     else:
         user_not_found()
 
-
+    a1.Account_Holder_Name = username1
+    
 
 def register():
     global win1
@@ -145,28 +154,30 @@ def login():
     Label(win2, text= "").pack()
     Login_Button = Button(win2, text= "Login", width= 10, height = 1, command= login_verify)
     Login_Button.pack()
+    
 
     win2.mainloop()
 
     
 
 
+def Mainscreen():
+    global win
+    win = Tk()
+    win.title(' JOJO BANKING')
+    win.geometry( "650x700")
+    Title_Lable = Label(text= "Welcome to JOJO Banking", font= ("Calibri, 13"))
+    Title_Lable.pack()
+    Label(text= "").pack()
+    bank_logo = PhotoImage(file='bank_logo.png')
+    my_label = Label(win, image= bank_logo)
+    my_label.pack()
+    Login_Button = Button(text= "Login", height= "2", width= "25", command= login)
+    Login_Button.pack()
+    Label(text= "").pack()
+    Register_Button = Button(text= "Register", height= "2", width= "25", command= register)
+    Register_Button.pack()
+   
+    win.mainloop()
 
-win = Tk()
-win.title(' JOJO BANKING')
-win.geometry( "650x700")
-Title_Lable = Label(text= "Welcome to JOJO Banking", font= ("Calibri, 13"))
-Title_Lable.pack()
-Label(text= "").pack()
-bank_logo = PhotoImage(file='bank_logo.png')
-my_label = Label(win, image= bank_logo)
-my_label.pack()
-Login_Button = Button(text= "Login", height= "2", width= "25", command= login)
-Login_Button.pack()
-Label(text= "").pack()
-Register_Button = Button(text= "Register", height= "2", width= "25", command= register)
-Register_Button.pack()
-
-
-
-win.mainloop()
+Mainscreen()
