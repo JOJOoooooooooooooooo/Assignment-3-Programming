@@ -1,10 +1,14 @@
 from tkinter import *
 import Bank
-from AccountModule import Account
+from AccountModule import *
 import os
 
 
-a1= Account
+a1= Account()
+a2= SavingsAccount()
+a1.Current_Balance = 0
+
+
 
 def savings():
     win7 = Toplevel(win)
@@ -13,8 +17,49 @@ def savings():
     win7.geometry("350x300")
     username_savings = Label(win7, text= a1.Account_Holder_Name + "'s Savings Account", font= ("Calibri, 13"))
     username_savings.pack()
+
+    number_savings = Label(win7, text= "Account Number: #" + str(a1.Account_Number), font= ("Calibri, 13"))
+    number_savings.pack()
+
+
+    savings_amount = Label(win7, text= a2.Current_Balance, font=("Calibri, 13"))
+    savings_amount.pack()
+    savings_depositlabel = Label(win7, text= "deposit: ")
+    savings_depositlabel.pack()
+    savings_depositinput = Entry(win7)
+    savings_depositinput.pack()
+    def triggerdeposit():
+        amount = float(savings_depositinput.get())
+        print(a2.deposit(amount))
+        win7.destroy()
+        savings()
+        
+    deposit_button = Button(win7, text= "Deposit", command= triggerdeposit)
+    deposit_button.pack()
+
+    savings_withdrawlabel = Label(win7, text= "withdraw: ")
+    savings_withdrawlabel.pack()
+
+    savings_withdrawinput = Entry(win7)
+    savings_withdrawinput.pack()   
+
+    def triggerwithdraw():
+        amount = float(savings_withdrawinput.get())
+        withdrawstring=(a2.withdraw(amount))
+        if withdrawstring == "Cannot go below $5000.0" or withdrawstring == "Value withdrawn must be postive number":
+            win8 = Toplevel(win)
+            win8.title("Error")
+            win8.geometry("400x150")
+            Label(win8, text= withdrawstring, font= ("Calibri, 13")).pack()
+            Button(win8, text= "OK", command= win8.destroy).pack()
+        
+        win7.destroy()
+        savings()
+        
+    withdraw_button = Button(win7, text= "Withdraw", command= triggerwithdraw)
+    withdraw_button.pack()
     Button(win7, text= "Back", command= login_session).pack()
-    
+
 def chequing():
     win6 = Toplevel(win)
     win3.destroy()
@@ -22,6 +67,7 @@ def chequing():
     win6.geometry("350x300")
     username_chequing = Label(win6, text= a1.Account_Holder_Name + "'s Chequing Account", font= ("Calibri, 13"))
     username_chequing.pack()
+
 def login_session():
     global win3
     win2.destroy()
@@ -30,13 +76,16 @@ def login_session():
     win3.geometry("350x300")
     usernamebanking_label = Label(win3, text= username1 + "'s Banking", font= ("Calibri, 13"))
     usernamebanking_label.pack()
+
+    numberbanking_label = Label(win3, text= "Account Number: #" + str(a1.Account_Number), font= ("Calibri, 13"))
+    numberbanking_label.pack()
+
     Chequing_Button = Button(win3, text= "Checking", command= chequing)
     Savings_Button = Button(win3, text= "Savings", command= savings)
     Savings_Button.pack()
     Chequing_Button.pack()
 
-def login_success():
-    login_session()
+    
 
 def password_incorrect():
     global win4
@@ -84,13 +133,14 @@ def login_verify():
         file1 = open(username1, "r")
         verify = file1.read().splitlines()
         if password1 in verify:
-            login_success()
+            login_session()
+            a1.set_account_holder_name(username1)
         else:
             password_incorrect()
     else:
         user_not_found()
 
-    a1.Account_Holder_Name = username1
+    
     
 
 def register():
