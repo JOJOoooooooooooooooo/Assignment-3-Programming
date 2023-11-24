@@ -6,6 +6,8 @@ import os
 
 a1= Account()
 a2= SavingsAccount()
+a3 = ChequingAccount()
+
 a1.Current_Balance = 0
 
 
@@ -68,17 +70,71 @@ def chequing():
     username_chequing = Label(win6, text= a1.Account_Holder_Name + "'s Chequing Account", font= ("Calibri, 13"))
     username_chequing.pack()
 
+    number_chequing = Label(win6, text= "Account Number: #" + str(a1.Account_Number), font= ("Calibri, 13"))
+    number_chequing.pack()
+
+    chequing_amount = Label(win6, text= a3.Current_Balance, font=("Calibri, 13"))
+    chequing_amount.pack()
+    chequing_updraft = Label(win6, text= "Updraft Limit: -5000.0", font=("Calibri, 10"))
+    chequing_updraft.pack()
+    chequing_depositlabel = Label(win6, text= "deposit: ")
+    chequing_depositlabel.pack()
+    chequing_depositinput = Entry(win6)
+    chequing_depositinput.pack()
+    def triggerdeposit():
+        amount = float(chequing_depositinput.get())
+        depositstring = (a3.deposit(amount))
+        if depositstring == "Deposit Must be Greater Than $0":
+            win10 = Toplevel(win)
+            win10.title("Error")
+            win10.geometry("400x150")
+            Label(win10, text= depositstring, font= ("Calibri, 13")).pack()
+            Button(win10, text= "OK", command= win10.destroy).pack()
+        win6.destroy()
+        chequing()
+       
+        
+    deposit_button = Button(win6, text= "Deposit", command= triggerdeposit)
+    deposit_button.pack()
+
+    chequing_withdrawlabel = Label(win6, text= "withdraw: ")
+    chequing_withdrawlabel.pack()
+
+    chequing_withdrawinput = Entry(win6)
+    chequing_withdrawinput.pack()   
+
+    def triggerwithdraw():
+        amount = float(chequing_withdrawinput.get())
+        withdrawstring=(a3.withdraw(amount))
+        print(withdrawstring)
+        if withdrawstring == "Cannot go below -$5000.0" or withdrawstring == "Value withdrawn must be postive number":
+            win9 = Toplevel(win)
+            win9.title("Error")
+            win9.geometry("400x150")
+            Label(win9, text= withdrawstring, font= ("Calibri, 13")).pack()
+            Button(win9, text= "OK", command= win9.destroy).pack()
+        
+        win6.destroy()
+        chequing()
+        
+    withdraw_button = Button(win6, text= "Withdraw", command= triggerwithdraw)
+    withdraw_button.pack()
+    Button(win6, text= "Back", command= login_session).pack()
+
 def login_session():
     global win3
     win2.destroy()
     win3 = Toplevel()
     win3.title(username1 + "'s Banking")
     win3.geometry("350x300")
-    usernamebanking_label = Label(win3, text= username1 + "'s Banking", font= ("Calibri, 13"))
+    usernamebanking_label = Label(win3, text= username1 + "'s Banking", font= ("Calibri, 15"))
     usernamebanking_label.pack()
 
     numberbanking_label = Label(win3, text= "Account Number: #" + str(a1.Account_Number), font= ("Calibri, 13"))
     numberbanking_label.pack()
+
+    interestrate_label = Label(win3, text= "Interest Rate: 5.25%", font= ("Calibri, 13"))
+    interestrate_label.pack()
 
     Chequing_Button = Button(win3, text= "Checking", command= chequing)
     Savings_Button = Button(win3, text= "Savings", command= savings)

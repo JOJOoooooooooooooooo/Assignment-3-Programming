@@ -12,9 +12,9 @@ class Account():
     def set_account_holder_name(self, name):
         self.Account_Holder_Name = name
 
-    def RateofInterest(self):
-        CND_Rate_of_Interest = 0.525
-        return f'{self.Current_Balance * CND_Rate_of_Interest}' #Probably Wrong
+    def RateofInterest(self, CDN_Rate_of_Interest):
+        self.CND_Rate_of_Interest = "5.25%"
+        
     
     def deposit(self, value):
         if value > 0:
@@ -36,8 +36,11 @@ class SavingsAccount(Account):
             return "Value withdrawn must be postive number"
 class ChequingAccount(Account):
     def withdraw(self, value):
-        if self.Current_Balance == -5000.0:
-            return "Cannot go below -$5000.0"
+        if value > 0:
+            if self.Current_Balance - value < -5000.0:
+                return "Cannot go below -$5000.0"
+            else:
+                self.Current_Balance -= value
+                return "Current Balance: " +str(self.Current_Balance)
         else:
-            self.Current_Balance -= value
-            return "Current Balance: " +str(self.Current_Balance)
+            return "Value withdrawn must be postive number"
